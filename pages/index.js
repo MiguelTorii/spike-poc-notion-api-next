@@ -1,12 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
-import Head from "next/head";
-import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import { Client } from "@notionhq/client";
 
 export default function Home({ page, description }) {
-  console.log(page);
-  console.log(description);
+  console.log("Page data:", page);
+  console.log("DescriptionBlock Data: ", description);
 
   const renderIcon = () => {
     if (page.icon.type === "emoji") {
@@ -25,7 +23,7 @@ export default function Home({ page, description }) {
         <h3>{page?.properties.title.title[0].plain_text}</h3>
         <p>{description.paragraph.rich_text[0]?.plain_text}</p>
         <div className={styles.mainMedia}>
-          <img src={page.cover.external.url} alt="main media" />
+          <img src={page?.cover?.external?.url} alt="main media" />
         </div>
         <div className={styles.shareContainer}>
           {renderIcon()}
@@ -41,6 +39,7 @@ export async function getStaticProps() {
 
   const pageId = "f11bce1c-a314-40a4-aee7-d322aff5ee1e";
   const blockId = "f11bce1c-a314-40a4-aee7-d322aff5ee1e";
+
   const page = await notion.pages.retrieve({ page_id: pageId });
 
   const blocks = await notion.blocks.children.list({
